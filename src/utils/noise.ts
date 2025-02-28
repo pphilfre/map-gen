@@ -84,7 +84,8 @@ export function generateRivers(noiseMap: number[], width: number, height: number
   // Try to create the requested number of rivers
   for (let r = 0; r < riverCount; r++) {
     // Start at a random position with medium-high elevation
-    let startX, startY;
+    let startX = Math.floor(random() * width);
+    let startY = Math.floor(random() * height);
     let attempts = 0;
     
     do {
@@ -185,10 +186,10 @@ export function placeCities(noiseMap: number[], rivers: number[][], width: numbe
     
     const x = Math.floor(random() * width);
     const y = Math.floor(random() * height);
-    const height = noiseMap[y * width + x];
+    const terrainHeight = noiseMap[y * width + x];
     
     // Cities should be on relatively flat land (not too high or low)
-    if (height < 0.3 || height > 0.7) continue;
+    if (terrainHeight < 0.3 || terrainHeight > 0.7) continue;
     
     // Cities are more likely to be near rivers
     const nearRiver = isNearRiver(x, y, 3);
@@ -209,7 +210,7 @@ export function placeCities(noiseMap: number[], rivers: number[][], width: numbe
     // Determine city size (larger if near river and on good terrain)
     let size = 1 + random() * 2;
     if (nearRiver) size += 1;
-    if (height > 0.4 && height < 0.6) size += 0.5;
+    if (terrainHeight > 0.4 && terrainHeight < 0.6) size += 0.5;
     
     cities.push({ x, y, size });
   }
